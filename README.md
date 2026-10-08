@@ -7,11 +7,13 @@
 3.  Technologies Used
 4.  How to use
 5.  The Components
-6.  Timeline
-7.  Wins and Blockers
-8.  Future content and improvements
-9.  Key Learnings
-10. Original Planning Notes
+6.  Project Structure
+7.  Design
+8.  Timeline
+9.  Wins and Blockers
+10. Future content and improvements
+11. Key Learnings
+12. Original Planning Notes
 
 ## Overview
 
@@ -21,14 +23,27 @@ You will find the deployed version [here](https://game-of-quotes.netlify.app/)
 
 ![Home page](docs/screenshots/home.png)
 
+| Characters | Character |
+| --- | --- |
+| ![Characters page](docs/screenshots/characters.png) | ![Character page](docs/screenshots/character.png) |
+
 # Installation
 
-To run the application locally, you'll need to have Node.js installed on your machine. To install Node.js visit its website [here](https://nodejs.org/), download the appropriate version of Node.js for your operating system. Run the downloaded installation file and follow the prompts to install Node.js on your computer. In the Visual Studio Code terminal type **node -v** and press Enter to verify that Node.js is installed and to check its version. You can then follow these steps:
+You'll need [Node.js](https://nodejs.org/) installed (run `node -v` to check). Then:
 
-1. Clone this repository to your local machine by typing git clone and using the ssh key from github in your terminal.
-2. In the root directory of the project, run npm install to install the required dependencies.
-3. Run npm run dev to start the server.
-4. Open the url in your browser to view the application.
+1. Clone this repository: `git clone <repository-ssh-url>`
+2. In the root directory, run `npm install` to install the dependencies.
+3. Run `npm run dev` to start the dev server.
+4. Open the local URL printed in the terminal (usually http://localhost:5173).
+
+Other scripts:
+
+- `npm run build` creates a production build in `dist/`
+- `npm run preview` serves the production build locally
+
+### Deployment
+
+The app is deployed on Netlify. Use the build command `npm run build` and the publish directory `dist`. `public/_redirects` sends every route to `index.html` so refreshing a page like `/characters` works with React Router.
 
 ## Technologies Used
 
@@ -70,6 +85,24 @@ On the **character page**, users can read every quote for the selected character
 **Avatar**: a round portrait that falls back to a monogram when an image is missing or fails to load.
 
 **Loader**: the "Summoning ravens..." loading state shown while data is fetched.
+
+## Project Structure
+
+```
+src/
+  App.jsx                  routes
+  consts.js                API url and character image map
+  global.scss              design tokens (CSS variables) and shared styles
+  components/              Avatar, Header, Loader
+  hooks/                   useCharacters, useCharacterDetails (data fetching)
+  pages/                   Home, Characters, CharacterDetails
+docs/screenshots/          images used in this README
+public/                    favicon and Netlify _redirects
+```
+
+## Design
+
+The look is dark and cinematic, in keeping with the show: obsidian backgrounds, aged gold for headings and accents, crimson and ember tones from the south and an icy blue for highlights. Colours and fonts are defined once as CSS variables in `global.scss`. Headings use Cinzel and body text uses Cormorant Garamond. The backgrounds are made with CSS gradients and inline SVG, so the app doesn't depend on external wallpaper links. Animations are disabled for users who prefer reduced motion, and the layout is responsive down to phone width.
 
 ## Timeline
 
@@ -116,6 +149,10 @@ Homepage: ![Home page](docs/screenshots/home.png)
 Characters page: ![Characters page](docs/screenshots/characters.png)
 
 Quote page: ![Character page](docs/screenshots/character.png)
+
+### Redesign:
+
+After the first version I came back to the project to give it a full visual redesign. The character list became a grid of cards with portraits and houses, search now filters as you type, each quote has its own card, and broken portraits fall back to a monogram. The search logic was also simplified (it now derives the filtered list instead of storing it in state), so the code screenshots above show the original first version.
 
 ## Wins and Blockers
 
