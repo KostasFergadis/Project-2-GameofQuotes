@@ -1,77 +1,79 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCharacters } from "../../hooks/useCharacters";
 import Loader from "../../components/Loader";
+import Avatar from "../../components/Avatar";
+import { CHARACTER_IMAGES } from "../../consts";
 
 const Characters = () => {
   const { allData, loading } = useCharacters();
-  const [filteredData, setFilteredData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setFilteredData(allData);
-  }, [allData]);
+  const filteredData = useMemo(() => {
+    const query = searchValue.trim().toLowerCase();
+    return allData.filter((data) => data.name.toLowerCase().includes(query));
+  }, [allData, searchValue]);
 
-  const handleSearch = (event) => {
+  // Enter / Search: jump straight to a character if the query narrows to one,
+  // or matches a name exactly.
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const inputValue = event.target.value.toLowerCase();
-    
-    const result = allData.filter((data) => {
-      const dataName = data.name.toLowerCase();
-      return dataName.includes(inputValue);
-    });
-    
-    setFilteredData(result);
-    setSearchValue(event.target.value);
+    const query = searchValue.trim().toLowerCase();
+    const match =
+      filteredData.length === 1
+        ? filteredData[0]
+        : filteredData.find((c) => c.name.toLowerCase() === query);
+    if (match) navigate(`/character/${match.slug}`);
   };
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    const inputValue = searchValue.toLowerCase();
-    
-    if (filteredData.length === 1) {
-      navigate(`/character/${filteredData[0].slug}`);
-    } else {
-      const character = filteredData.find(
-        (filter) => filter.name.toLowerCase() === inputValue
-      );
-      if (character) {
-        navigate(`/character/${character.slug}`);
-      }
-    }
-  };
-  
   if (loading) return <Loader />;
 
   return (
-    <div className="explorepage">
+    <div className="realm explorepage">
       <div className="insidestuff">
-        <form className="formHome">
-          <label>
-            <button onClick={handleClick} className="searchBtn">
-              Search:
-            </button>
-          </label>
+        <h1 className="page-title">The Characters</h1>
+        <p className="page-subtitle">Choose a voice from the Seven Kingdoms</p>
+
+        <form className="formHome" onSubmit={handleSubmit} role="search">
           <input
             className="search"
             type="text"
             value={searchValue}
-            onChange={handleSearch}
-            placeholder="Character's name"
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Search by name..."
+            aria-label="Search characters"
           />
+          <button type="submit" className="searchBtn">
+            Search
+          </button>
         </form>
-        
+        <p className="result-count">
+          {filteredData.length} of {allData.length} characters
+        </p>
+
         <section className="nameslist">
-          <div className="divList">
-            {filteredData.map((filter, ind) => (
-              <ul key={ind}>
-                <Link className="linkList" to={`/character/${filter.slug}`}>
-                  <li className="name">{filter.name}</li>
+          <ul className="divList">
+            {filteredData.map((character) => (
+              <li key={character.slug}>
+                <Link className="linkList" to={`/character/${character.slug}`}>
+                  <article className="char-card">
+                    <Avatar
+                      src={CHARACTER_IMAGES[character.name]}
+                      name={character.name}
+                    />
+                    <span className="name">{character.name}</span>
+                    {character.house?.name && (
+                      <span className="house">{character.house.name}</span>
+                    )}
+                  </article>
                 </Link>
-              </ul>
+              </li>
             ))}
-          </div>
+            {filteredData.length === 0 && (
+              <li className="empty">No one by that name walks these lands.</li>
+            )}
+          </ul>
         </section>
       </div>
     </div>

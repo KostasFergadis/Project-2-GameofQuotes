@@ -1,12 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+
+const navigationLinks = [
+  { title: "Home", slug: "/" },
+  { title: "Characters", slug: "/characters" },
+];
 
 const Header = () => {
   const location = useLocation();
-
-  const navigationLinks = [
-    { title: "Home", slug: "/" },
-    { title: "Characters", slug: "/characters" },
-  ];
 
   if (location.pathname === "/") {
     return null;
@@ -15,12 +15,19 @@ const Header = () => {
   return (
     <header className="header">
       <nav>
+        <Link className="brand" to="/">
+          Game of Quotes
+        </Link>
         <ul className="listHeader">
           {navigationLinks.map((link) => (
-            <li key={link.slug} className="headerItem">
-              <Link className="headerLink" to={link.slug}>
+            <li key={link.slug}>
+              <NavLink
+                className="headerLink"
+                to={link.slug}
+                end={link.slug === "/"}
+              >
                 {link.title}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

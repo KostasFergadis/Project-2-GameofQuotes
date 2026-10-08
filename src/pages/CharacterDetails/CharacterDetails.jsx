@@ -1,63 +1,51 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useCharacterDetails } from "../../hooks/useCharacterDetails";
 import Loader from "../../components/Loader";
-import { CHARACTER_IMAGES } from "../../consts"; // Imported cleanly!
+import Avatar from "../../components/Avatar";
+import { CHARACTER_IMAGES } from "../../consts";
 
 const CharacterDetails = () => {
   const { id } = useParams();
   const { quotes, loading } = useCharacterDetails(id);
   const navigate = useNavigate();
 
-  const onClick = () => {
-    navigate("/characters");
-  };
-
   if (loading) return <Loader />;
-  if (!quotes || quotes.length === 0) return <div>No character data found.</div>;
+  if (!quotes || quotes.length === 0) {
+    return <div className="realm not-found">No character data found.</div>;
+  }
 
   const character = quotes[0];
+  // The API returns character objects whose `quotes` is a list of strings.
+  const allQuotes = quotes.flatMap((item) => item.quotes ?? item);
 
   return (
-    <div className="quotepage">
+    <div className="realm quotepage">
       <div className="details">
         <div className="btncontainer">
-          <button onClick={onClick}>Back to characters</button>
+          <button onClick={() => navigate("/characters")}>
+            &larr; All characters
+          </button>
         </div>
         <div className="listInfo">
           <div className="insidecard">
-            <div className="imgContainer">
-              <img
-                src={CHARACTER_IMAGES[character.name] || "https://via.placeholder.com/150"}
-                alt={character.name}
-                className="characterImage"
-              />
-            </div>
-            
-            <div className="quoteName">
-              <h2>Character's name:</h2> 
-              <span>{character.name}</span>
-            </div>
-            
-            <div className="quoteHouse">
-              <h2>Character's house:</h2>
-              <span>
-                {character.house === null
-                  ? "This character does not have a house or his house is unknown"
-                  : character.house.name}
-              </span>
-            </div>
-            
-            <div className="quoteQuotes">
-              <h2>Character's quotes:</h2>
-              <ul>
-                {quotes.map((item, ind) => (
-                  <li key={ind}>
-                    <span>"{item.quotes || item}"</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
+            <Avatar
+              className="characterImage"
+              src={CHARACTER_IMAGES[character.name]}
+              name={character.name}
+            />
+            <h1 className="char-name">{character.name}</h1>
+            <span className="char-house">
+              {character.house?.name ?? "House unknown"}
+            </span>
+
+            <h2 className="quotes-heading">Words spoken</h2>
+            <ul className="quoteList">
+              {allQuotes.map((text, ind) => (
+                <li key={ind} className="quote">
+                  <p>{text}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

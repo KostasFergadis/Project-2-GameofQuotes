@@ -1,19 +1,69 @@
-@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
-
 @import "./pages/Home/Home.scss";
 @import "./components/Header/Header.scss";
 @import "./pages/Characters/Characters.scss";
 @import "./pages/CharacterDetails/CharacterDetails.scss";
 
-* {
-  font-family: "MedievalSharp", cursive, sans-serif;
+:root {
+  --bg: #0b0d12;
+  --bg-raised: #12151c;
+  --surface: rgba(20, 23, 31, 0.78);
+  --border: rgba(201, 162, 75, 0.22);
+  --border-strong: rgba(201, 162, 75, 0.55);
+  --gold: #c9a24b;
+  --gold-bright: #e8c875;
+  --crimson: #8c1c1c;
+  --ember: #d9531e;
+  --ice: #8fb4d9;
+  --text: #e8e2d4;
+  --text-dim: #9a968a;
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-body: "Cormorant Garamond", Georgia, serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, button, input {
+  font-family: var(--font-display);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Shared atmospheric backdrop for inner pages: cold light from the north,
+// embers glowing from the south. No external images needed.
+.realm {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 0%, rgba(143, 180, 217, 0.12), transparent 70%),
+    radial-gradient(ellipse 80% 40% at 85% 100%, rgba(140, 28, 28, 0.28), transparent 70%),
+    linear-gradient(180deg, #0b0d12 0%, #10131a 60%, #14100f 100%);
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
