@@ -19,7 +19,7 @@ Game of Quotes is a web application that allows users to search for quotes from 
 
 You will find the deployed version [here](https://game-of-quotes.netlify.app/)
 
-![Alt text](https://i.imgur.com/eKMSomT.png "Optional title")
+![Home page](docs/screenshots/home.png)
 
 # Installation
 
@@ -36,8 +36,8 @@ To run the application locally, you'll need to have Node.js installed on your ma
 - React DOM: A package for rendering React components to the DOM (Document Object Model)
 - Axios: A library for making HTTP requests from the browser
 - Sass: A CSS extension language that adds features like variables, nesting, and mixins to make styling easier
-- Yarn: A package manager for managing dependencies in a JavaScript project
 - Vite: A fast development server and build tool for modern web applications
+- Cinzel and Cormorant Garamond (Google Fonts) for the typography
 
 **API Used**:
 
@@ -46,7 +46,6 @@ To run the application locally, you'll need to have Node.js installed on your ma
 **Dev tools**:
 
 - VS code
-- Yarn
 - Git
 - Github
 - Google Chrome dev tools
@@ -54,22 +53,23 @@ To run the application locally, you'll need to have Node.js installed on your ma
 
 ## How to use
 
-On the **characters page**, users can search for a character by name by typing in the search bar and clicking the "Search" button or pressing the "Enter" key. The page will display a list of characters whose names match the search query. Users can click on a character's name to see a list of their quotes on the QuotePage.
+On the **characters page**, users can browse every character as a card with a portrait and house, and filter the list by typing in the search bar. Pressing "Enter" or clicking "Search" jumps straight to a character when the search narrows to a single match or an exact name. Clicking a card opens that character's page.
 
-On the **QuotePage**, users can view a list of quotes for the selected character, along with their name and house. They can click the **Back to homepage** button to return to the homepage.
+On the **character page**, users can read every quote for the selected character, along with their portrait, name and house. The "All characters" button returns to the list.
 
 ## The components
 
-The three components of the application:
+**Homepage**: the landing page. A castle skyline, rising embers and the "Game of Quotes" title are built entirely from CSS and inline SVG (no external wallpapers), with an "Enter the Realm" button leading to the characters.
 
-**Homepage**: the project's initial landing page, designed with both aesthetic appeal and functionality in mind. Its primary purpose is to provide an engaging and visually appealing introduction to the project, enticing users to explore further.
+**Header**: a sticky navigation bar, hidden on the homepage. The links are generated from the navigationLinks array and rendered with react-router-dom's NavLink, so the current page is highlighted.
 
-**Header**: displays the navigation menu for the web application at the top of the screen. It consists of a nav element containing an unordered list of navigation links that are generated dynamically using the navigationLinks array.Each link in the navigation menu is represented as a list item (li) and wrapped in a Link component from the react-router-dom library to enable client-side routing.
-The navigationLinks array is an array of objects that define the title of the link and its associated slug.
+**Characters**: a search page that filters characters by name (case-insensitive, partial matches) and shows them as a grid of cards.
 
-**Characters**: a search page that lets users search for characters by name, using filter and find array methods, and see a list of matching results. They can then click on a character's name to see a page with a list of their quotes.
+**CharacterDetails**: a detail page for the character selected via the slug in the URL, showing their portrait, name, house and a card for each quote.
 
-**QuotePage**: a detail page that displays information about a selected character, based on their slug which is used as a parameter, including their name, house, and a list of their quotes.
+**Avatar**: a round portrait that falls back to a monogram when an image is missing or fails to load.
+
+**Loader**: the "Summoning ravens..." loading state shown while data is fetched.
 
 ## Timeline
 
@@ -111,11 +111,11 @@ JSX: ![Alt text](https://i.imgur.com/NI98YsV.png "Optional title")
 
 Finishing off I added a navbar with links for the homepage and quotes page and some additional links with their functionalities added in the future. I used SCSS for the styling and finally the app was deployed with Netlify.
 
-Homepage: ![Alt text](https://i.imgur.com/eKMSomT.png "Optional title")
+Homepage: ![Home page](docs/screenshots/home.png)
 
-Characters page: ![Alt text](https://i.imgur.com/iSATTV0.png "Optional title")
+Characters page: ![Characters page](docs/screenshots/characters.png)
 
-Quote page: ![Alt text](https://i.imgur.com/vGC4KPb.png "Optional title")
+Quote page: ![Character page](docs/screenshots/character.png)
 
 ## Wins and Blockers
 
@@ -125,11 +125,11 @@ Figuring out how to manipulate the data from the API and getting the search bar 
 
 ## Future content and improvements
 
-As of now there are three navigation links that are not currently used. These are "Add your own quotes", "Register" and "Login". In the near feature I plan to update this web application so that the user is able to register, login and then add, edit or delete a quote for a character from the show, improve the styling and making it mobile responsive.
+Ideas for the future: let users register, log in and add, edit or delete their own quotes, and bring back the original quiz idea (see below).
 
 ### Update
 
-A homepage was implemented to provide an entry point for users. Furthermore, the styling of all pages was enhanced to ensure responsiveness across various devices.
+A homepage was added as an entry point and the styling was made responsive across devices. The whole UI was later redesigned with a darker, more atmospheric Game of Thrones look: a gold, crimson and ice-blue palette, new typography, CSS/SVG backgrounds instead of hotlinked wallpapers, a card grid for characters and individual quote cards.
 
 ## Key Learnings
 
